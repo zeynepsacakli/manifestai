@@ -8,21 +8,77 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <style>
         :root { --primary: #e65100; } /* Kriz/Afet Turuncusu */
-        body { padding: 20px; font-family: system-ui, -apple-system, sans-serif; }
+        html { scroll-behavior: smooth; } /* Menüye basınca yumuşak kayma */
+        body { padding: 0 20px 20px 20px; font-family: system-ui, -apple-system, sans-serif; }
+        
+        /* Navigasyon Menüsü Stili */
+        nav.main-nav {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 0.8rem 1rem;
+            margin-bottom: 1.5rem;
+        }
+        nav.main-nav ul { margin: 0; padding: 0; display: flex; justify-content: center; gap: 1.5rem; list-style: none; }
+        nav.main-nav a { color: #333; font-weight: 600; text-decoration: none; font-size: 0.95rem; }
+        nav.main-nav a:hover { color: #e65100; }
+
         .hero { text-align: center; padding: 2.5rem 0; border-bottom: 1px solid #e0e0e0; }
-        .grid-team { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.2rem; margin-top: 1rem; }
+        .grid-team { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.2rem; margin-top: 1rem; }
         .card { padding: 1.2rem; border: 1px solid #e0e0e0; border-radius: 8px; text-align: center; background: #fafafa; }
+        
+        /* Açılır-Kapanır Biyo (Details/Summary) Stili */
+        details.bio-details { margin: 0.8rem 0; text-align: left; background: #fff; border: 1px solid #eee; border-radius: 6px; padding: 0.3rem 0.6rem; }
+        details.bio-details summary { font-size: 0.8rem; font-weight: 600; color: #e65100; cursor: pointer; user-select: none; }
+        details.bio-details p { font-size: 0.82rem; color: #555; margin: 0.5rem 0 0.2rem 0; line-height: 1.35; }
+
+        /* Görselleri Yan Yana Getiren Grid */
+        .diagram-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start; margin-top: 1rem; }
+        .diagram-grid figure { margin: 0; text-align: center; }
+        img.showcase-img { width: 100%; height: auto; max-height: 450px; object-fit: contain; border-radius: 8px; border: 1px solid #ddd; background: #fff; padding: 5px; }
+
         .doc-table { width: 100%; margin-top: 1rem; border-collapse: collapse; }
         .doc-table th, .doc-table td { padding: 12px; text-align: left; }
         .btn-link { display: inline-block; padding: 6px 12px; background-color: #e65100; color: white; border-radius: 4px; text-decoration: none; font-size: 0.85rem; font-weight: 500; }
         .btn-link:hover { background-color: #bf360c; color: white; }
-        img.showcase-img { width: 100%; max-width: 800px; border-radius: 8px; border: 1px solid #ddd; margin: 1rem 0; }
+
+        /* Tıklayınca Kopyalama Butonu Kutusu */
+        .copy-email-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #f5f5f5;
+            border: 1px dashed #e65100;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: monospace;
+            font-size: 0.95rem;
+            color: #333;
+            transition: all 0.2s ease;
+        }
+        .copy-email-box:hover { background: #ffe0b2; }
     </style>
 </head>
 <body>
+
+    <!-- 4. Navigasyon Menüsü -->
+    <nav class="main-nav">
+        <ul>
+            <li><a href="#hero">Genel Bakış</a></li>
+            <li><a href="#team">Takım Üyeleri</a></li>
+            <li><a href="#about">Proje Hakkında</a></li>
+            <li><a href="#reports">Raporlar</a></li>
+            <li><a href="#contact">İletişim</a></li>
+        </ul>
+    </nav>
+
     <main class="container">
         <!-- 1. Hero Section (Başlık ve Özet) -->
-        <section class="hero">
+        <section id="hero" class="hero">
             <h1>ManifestAI</h1>
             <h3>Akıllı Afet Koordinasyon ve Teyit Platformu</h3>
             <p class="landing-summary">Sosyal medyadan akan yapılandırılmamış afet verilerini Türkçe BERT ve bulanık konum algoritmalarıyla anlık olarak doğrulayıp canlı kriz haritalarına dönüştüren yapay zekâ destekli karar destek platformudur.</p>
@@ -30,45 +86,87 @@
             <p class="meta-info"><strong>TOBB Ekonomi ve Teknoloji Üniversitesi</strong> — Bilgisayar Mühendisliği</p>
             <p class="meta-info">BİL 495 / YAP 495 Bitirme Projesi (2025-2026 Yaz Dönemi)</p>
         </section>
-        <!-- 3. Takım Üyeleri (Proje Tanıtımının Hemen Altında) -->
+
+        <!-- 1. Takım Üyeleri (Açılır-Kapanır Biyo) -->
         <section id="team" style="margin-top: 2.5rem;">
             <h2>Takım Üyeleri</h2>
             <div class="grid-team">
+                
+                <!-- Esmanur Ulu -->
                 <div class="card">
                     <img src="esma.jpg" alt="Esmanur Ulu" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #e65100;">
                     <h4 style="margin-bottom: 0.2rem;">Esmanur Ulu</h4>
-                    <p style="font-size: 0.85rem; color: #555; margin-bottom: 0.8rem;">TOBB ETÜ Bilgisayar Mühendisliği Öğrencisi. Sistem entegrasyonu ve veri akış altyapı sorumlusu.</p>
+                    <p style="font-size: 0.8rem; color: #e65100; font-weight: 600; margin-bottom: 0.4rem;">Pipeline & Integration Specialist</p>
+                    
+                    <details class="bio-details">
+                        <summary>Hakkında / Biyo</summary>
+                        <p>TOBB ETÜ Bilgisayar Mühendisliği Öğrencisi. Sistem entegrasyonu ve veri akış altyapı sorumlusu.</p>
+                    </details>
+                    
                     <a href="https://www.linkedin.com/in/esmanur-ulu-85462b2a0/" target="_blank" class="btn-link">LinkedIn Profili</a>
                 </div>
+
+                <!-- İclal Zeynep Kaya -->
                 <div class="card">
                     <img src="iclal.jpg" alt="İclal Zeynep Kaya" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #e65100;">
                     <h4 style="margin-bottom: 0.2rem;">İclal Zeynep Kaya</h4>
-                    <p style="font-size: 0.85rem; color: #555; margin-bottom: 0.8rem;">TOBB ETÜ Bilgisayar Mühendisliği Öğrencisi. Veritabanı tasarımı ve coğrafi bilgi sistemleri sorumlusu.</p>
+                    <p style="font-size: 0.8rem; color: #e65100; font-weight: 600; margin-bottom: 0.4rem;">GIS & Database Specialist</p>
+                    
+                    <details class="bio-details">
+                        <summary>Hakkında / Biyo</summary>
+                        <p>TOBB ETÜ Bilgisayar Mühendisliği Öğrencisi. Veritabanı tasarımı ve coğrafi bilgi sistemleri sorumlusu.</p>
+                    </details>
+
                     <a href="https://www.linkedin.com/in/iclalzeynepkaya/" target="_blank" class="btn-link">LinkedIn Profili</a>
                 </div>
+
+                <!-- Nisa Naz Keleşoğlu -->
                 <div class="card">
                     <img src="nisa.jpg" alt="Nisa Naz Keleşoğlu" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #e65100;">
                     <h4 style="margin-bottom: 0.2rem;">Nisa Naz Keleşoğlu</h4>
-                    <p style="font-size: 0.85rem; color: #555; margin-bottom: 0.8rem;">TOBB ETÜ Bilgisayar Mühendisliği Öğrencisi. Arka yüz servisleri ve API geliştirme sorumlusu.</p>
+                    <p style="font-size: 0.8rem; color: #e65100; font-weight: 600; margin-bottom: 0.4rem;">Backend & API Developer</p>
+                    
+                    <details class="bio-details">
+                        <summary>Hakkında / Biyo</summary>
+                        <p>TOBB ETÜ Bilgisayar Mühendisliği Öğrencisi. Arka yüz servisleri ve API geliştirme sorumlusu.</p>
+                    </details>
+
                     <a href="https://www.linkedin.com/in/nisa-naz-kele%C5%9Fo%C4%9Flu-5a4024335/" target="_blank" class="btn-link">LinkedIn Profili</a>
                 </div>
+
+                <!-- Zeynep Saçaklı -->
                 <div class="card">
                     <img src="zeynep.jpg" alt="Zeynep Saçaklı" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #e65100;">
                     <h4 style="margin-bottom: 0.2rem;">Zeynep Saçaklı</h4>
-                    <p style="font-size: 0.85rem; color: #555; margin-bottom: 0.8rem;">TOBB ETÜ Bilgisayar Mühendisliği Öğrencisi. Yapay zekâ, doğal dil işleme ve metin analizi sorumlusu.</p>
+                    <p style="font-size: 0.8rem; color: #e65100; font-weight: 600; margin-bottom: 0.4rem;">AI / NLP Lead & Model Engineer</p>
+                    
+                    <details class="bio-details">
+                        <summary>Hakkında / Biyo</summary>
+                        <p>TOBB ETÜ Bilgisayar Mühendisliği Öğrencisi. Yapay zekâ, doğal dil işleme ve metin analizi sorumlusu.</p>
+                    </details>
+
                     <a href="https://www.linkedin.com/in/zeynep-sa%C3%A7akl%C4%B1-758798349/" target="_blank" class="btn-link">LinkedIn Profili</a>
                 </div>
+
+                <!-- Zeynep Yetkin -->
                 <div class="card">
                     <img src="zeynep_y.jpeg" alt="Zeynep Yetkin" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover; margin-bottom: 0.8rem; border: 2px solid #e65100;">
                     <h4 style="margin-bottom: 0.2rem;">Zeynep Yetkin</h4>
-                    <p style="font-size: 0.85rem; color: #555; margin-bottom: 0.8rem;">TOBB ETÜ Bilgisayar Mühendisliği Öğrencisi. Ön yüz arayüz tasarımı ve kullanıcı deneyimi sorumlusu.</p>
+                    <p style="font-size: 0.8rem; color: #e65100; font-weight: 600; margin-bottom: 0.4rem;">Frontend & UI/UX Lead</p>
+                    
+                    <details class="bio-details">
+                        <summary>Hakkında / Biyo</summary>
+                        <p>TOBB ETÜ Bilgisayar Mühendisliği Öğrencisi. Ön yüz arayüz tasarımı ve kullanıcı deneyimi sorumlusu.</p>
+                    </details>
+
                     <a href="https://www.linkedin.com/in/zeynep-yetkin-6133a032a/" target="_blank" class="btn-link">LinkedIn Profili</a>
                 </div>
+
             </div>
         </section>
 
-        <!-- 2. Proje Açıklaması ve Tanıtım -->
-        <section id="about" style="margin-top: 2rem;">
+        <!-- 2. Proje Açıklaması ve Tanıtım (Yan Yana Diyagramlar) -->
+        <section id="about" style="margin-top: 2.5rem;">
             <h2>Proje Hakkında</h2>
             <p><strong>Problem:</strong> Afet anlarında sosyal medyada oluşan kaotik, yapılandırılmamış yardım çağrıları bilgi kirliliğine yol açmakta ve takipçi sayısı düşük kullanıcıların kritik çağrıları görünmez kalmaktadır.</p>
             <p><strong>Çözüm:</strong> ManifestAI; akan verileri Türkçe BERT (BERTURK) ve Levenshtein bulanık konum algoritmalarıyla anlık olarak işleyip, gürültüyü eleyen ve doğrulanmış lojistik ihtiyaçları ilçe düzeyinde canlı kriz haritalarına dönüştüren yapay zekâ destekli bir karar destek sistemidir.</p>
@@ -76,21 +174,21 @@
             <h3 style="margin-top: 1.5rem;">Sistem Mimarisi ve Arayüz Taslağı</h3>
             <p>Sistemin yüksek seviyeli alt sistem bileşen yapısı ve kullanıcı arayüz taslağı aşağıda sunulmuştur:</p>
             
-            <div style="text-align: center;">
+            <!-- 2. UML Diyagramı ve Mockup Yan Yana -->
+            <div class="diagram-grid">
                 <figure>
                     <img src="architecture.jpeg" alt="ManifestAI Alt Sistem Ayrıştırması ve Bileşen Mimarisi" class="showcase-img">
-                    <figcaption style="font-size: 0.85rem; color: #666;">Şekil 1: Alt Sistem Ayrıştırması — UML Bileşen Diyagramı</figcaption>
+                    <figcaption style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">Şekil 1: Alt Sistem Ayrıştırması — UML Bileşen Diyagramı</figcaption>
                 </figure>
                 
-                <figure style="margin-top: 1.5rem;">
+                <figure>
                     <img src="mockup.png" alt="ManifestAI Kullanıcı Arayüzü Mock-up Taslağı" class="showcase-img">
-                    <figcaption style="font-size: 0.85rem; color: #666;">Şekil 2: Kullanıcı Arayüzü ve Navigasyon Taslağı (Mock-up)</figcaption>
+                    <figcaption style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">Şekil 2: Kullanıcı Arayüzü ve Navigasyon Taslağı (Mock-up)</figcaption>
                 </figure>
             </div>
         </section>
 
-        
-        <!-- 4. Akademik ve Teknik Raporlar Havuzu (Klasörden İndirme) -->
+        <!-- Akademik ve Teknik Raporlar Havuzu -->
         <section id="reports" style="margin-top: 2.5rem;">
             <h2>Akademik ve Teknik Raporlar</h2>
             <p>Proje süresince hazırlanan dokümanları aşağıdaki butonlara tıklayarak doğrudan indirebilirsiniz:</p>
@@ -132,11 +230,30 @@
             </table>
         </section>
 
-        <!-- 5. Footer (İletişim & GitHub) -->
-        <footer style="margin-top: 3rem; text-align: center; border-top: 1px solid #e0e0e0; padding-top: 1.5rem;">
+        <!-- 3. & 5. Footer (İletişim & Kopyalanabilir E-posta) -->
+        <footer id="contact" style="margin-top: 3rem; text-align: center; border-top: 1px solid #e0e0e0; padding-top: 1.5rem;">
             <p><strong>Açık Kaynak Kodu:</strong> <a href="https://github.com/zeynepsacakli/manifestai" target="_blank">GitHub Deposu (Repository)</a></p>
-            <p><strong>İletişim:</strong>manifestai.team@gmail.com</p>
+            
+            <p><strong>İletişim E-Posta:</strong></p>
+            <div class="copy-email-box" onclick="copyEmail()" title="E-postayı kopyalamak için tıklayın">
+                <span id="emailText">manifestai.team@gmail.com</span>
+                <span id="copyStatus" style="font-size: 0.8rem; color: #e65100;">(Tıkla Kopyala 📋)</span>
+            </div>
         </footer>
     </main>
+
+    <!-- Kopyalama Fonksiyonu JavaScript -->
+    <script>
+        function copyEmail() {
+            const email = "manifestai.team@gmail.com";
+            navigator.clipboard.writeText(email).then(() => {
+                const status = document.getElementById("copyStatus");
+                status.innerText = "(Kopyalandı! ✅)";
+                setTimeout(() => {
+                    status.innerText = "(Tıkla Kopyala 📋)";
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 </html>
